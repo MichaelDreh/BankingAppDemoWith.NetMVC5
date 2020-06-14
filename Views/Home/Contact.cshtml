@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Contact";
+    var email = (string)ViewBag.Email;
+}
+
+<div class="content-wrapper">
+
+    <div class="col-md-10 col-sm-offset-1" style="margin-top : 30px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h1 class="panel-title">CONTACT US</h1>
+            </div>
+
+            <div class="panel-body">
+                <form action="/home/contact" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Email : </label>
+                            <input type="text" class="form-control" name="contactemail" value="@email" disabled />
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Subject :</label>
+                            <input type="text" class="form-control" name="subject" />
+                        </div>
+                    </div><br />
+
+                    <label>Message :</label>
+                    <div class="row" style="width:auto;">
+                        <textarea rows="10" class="form-control"></textarea>
+                    </div>
+                    <hr />
+                    <input type="submit" value="Send" class="btn btn-info" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

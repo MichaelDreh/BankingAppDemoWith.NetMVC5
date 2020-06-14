@@ -1,0 +1,100 @@
+﻿@model BankingSystem.Models.TransferModel
+@{
+    ViewBag.Title = "Transfer";
+}
+
+<div id="login">
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-4">
+                <div id="login-box" class="col-md-12">
+                    <h3 class="text-center text-info">Transfer</h3>
+                    <br />
+                    <br />
+                    <hr />
+                    <div class="form-group">
+                        <label for="username" class="text-info">Account:</label><br>
+                        <input type="number" id="accountNumber" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="text-info">Amount</label><br>
+                        <input type="number" id="amount" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="button" id="sub" name="submit" class="btn btn-info btn-md" value="Proceed" data-toggle="modal" data-target="#modalCart">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document" style="background-color : #17a2b8">
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header text-center" style="background-color : #17a2b8">
+                    <h4 class="modal-title" id="myModalLabel">Make Transfer</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <div id="login-column" class="col-md-6 col-md-offset-3">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="/transfer/transfer" method="post">
+                            @Html.AntiForgeryToken()
+                            <h3 class="text-center text-info" id="message">You Are about to Transfer </h3>
+                            <br />
+                            <br />
+                            <hr />
+                            <div class="form-group">
+                                <input hidden type="number" name="AcountNumber" id="account" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input hidden type="number" name="Amount" id="amt" class="form-control">
+                            </div>
+                            <div class="form-group text-center">
+                                <input type="submit" id="btnSubmit" class="btn btn-primary" value="Confirm" />
+                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--Footer-->
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#sub").on('click', function () {
+            //e.preventDefault();
+            var accountNumber = $("#accountNumber").val();
+            var amount = $("#amount").val();
+
+            //console.log(`Account: ${accountNumber}, Amount: ${amount}`);
+
+            $("#account").val(accountNumber);
+            $("#amt").val(amount);
+
+            $.getJSON("/transfer/GetAcountDetails", { accountNumber }, function (data) {
+                console.log(data);
+                if (data !== undefined && data.Name !== null) {
+                    $("#message").html("Are You Sure You Want To Transfer #" + amount + " To " + data.Name);
+                    $("#btnSubmit").prop("disabled", false);
+                }
+                else
+                {
+                    $("#message").html("Incorrect Account Number Entered");
+                    $("#btnSubmit").prop("disabled", true);
+                }
+            });
+        });
+    })
+</script>

@@ -1,0 +1,228 @@
+﻿@using BankingSystem.Resources.Entities
+
+@{
+    ViewBag.Title = "Home Page";
+
+    var userDetails = (Customer)ViewBag.userDetails;
+
+    var message = ViewBag.Message;
+    var transactions = (List<Transaction>)ViewBag.Transactions;
+
+    var firstname = (string)ViewBag.FirstName;
+}
+
+
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCart">Add New Customer</button>
+        </div>
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <div class="alert alert-info" role="alert">
+                <strong>Heads up!</strong>   @message
+            </div>
+        }
+
+    </div>
+   
+    
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="container-fluid">
+
+            <!-- Info boxes -->
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">BALANCE: @userDetails.Balance</span>
+                        </div>
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-cogs"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">BVN :@userDetails.BVN</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="clearfix hidden-md-up"></div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-database"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Account Number:@userDetails.AccountNumber</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">User: @User.Identity.Name</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <!-- /.row -->
+            <!-- Main row -->
+            <div class="row">
+                <!-- Left col -->
+                <div class="col-md-12">
+                    <!-- MAP & BOX PANE -->
+                    <div class="card">
+                        <!-- /.card-header -->
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <!-- /.row -->
+                    <!-- TABLE: LATEST ORDERS -->
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                            <h3 class="text-cent card-title">Transactions</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Transaction ID</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>To</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                     @foreach (var trans in transactions)
+                                     {
+                                       <tr>
+                                         <td>@trans.TransactionId</td>
+                                         <td>@trans.Amount</td>
+                                         <td>
+                                             @if (trans.ReceiverName == firstname)
+                                             {
+                                                 <span class="badge badge-success">Credit</span>
+                                             }
+                                             else
+                                             {
+                                                 <span class="badge badge-danger">Debit</span>
+                                             }
+
+                                         </td>
+                                         <td>
+                                         <div class="sparkbar" data-color="#00a65a" data-height="20">@trans.ReceiverName</div>
+                                        </td>
+                                      </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer clearfix">
+                            <a href="" class="btn btn-sm btn-secondary float-right">View All Transactions </a>
+                        </div>
+                        <!-- /.card-footer -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+        </div><!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+    <!-- Modal: modalCart -->
+    <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document" style="background-color : #17a2b8">
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header text-center" style="background-color : #17a2b8">
+                    <h4 class="modal-title" id="myModalLabel">Register New Customer</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <div id="login-column" class="col-md-6 col-md-offset-3">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="/account/register" method="post">
+                            @Html.AntiForgeryToken()
+                            <h3 class="text-center text-info">Register</h3>
+                            <div class="form-group">
+                                <label for="username" class="text-info">FirstName:</label><br>
+                                <input type="text" name="FirstName" id="username" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="text-info">LastName:</label><br>
+                                <input type="text" name="LastName" id="password" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="text-info">Email</label><br>
+                                <input type="email" name="Email" id="password" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="text-info">Phone</label><br>
+                                <input type="text" name="Phone" id="password" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="text-info">Pin</label><br>
+                                <input type="text" name="Pin" id="password" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="text-info">Role</label><br>
+
+                                <select name="RoleName">
+                                    <option>----</option>
+                                    <option value="User">User</option>
+                                    <option value="Admin">Admin</option>
+                                </select>
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" value="Register" />
+                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <!--Footer-->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@Html.PagedListPager(Model,i=>Url.Action("Index","Home", new { i = Request.QueryString["i"] }))*@

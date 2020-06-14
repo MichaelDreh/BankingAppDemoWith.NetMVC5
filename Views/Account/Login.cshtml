@@ -1,0 +1,60 @@
+﻿@model BankingSystem.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+}
+    <style>
+        body {
+            margin: 100px;
+            padding: 0;
+            background-color: #17a2b8;
+        }
+
+        #login .container #login-row #login-column #login-box {
+            max-width: 600px;
+            height: 350px;
+            border: 1px solid #9C9C9C;
+            background-color: #EAEAEA;
+        }
+
+            #login .container #login-row #login-column #login-box #login-form {
+                padding: 20px;
+            }
+
+                #login .container #login-row #login-column #login-box #login-form #register-link {
+                    margin-top: -85px;
+                }
+    </style>
+
+<body>
+    <div id="login">
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-4">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="/account/login" method="post">
+                            @Html.AntiForgeryToken()
+                            <h3 class="text-center text-info">Login</h3>
+                            <br />
+                            <br />
+                            <hr />
+                            <div class="form-group">
+                                <label for="username" class="text-info">Username:</label><br>
+                                <input type="text" name="UserName" id="username" value="@Model.UserName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text-info">Password:</label><br>
+                                <input type="password" name="Password" id="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                            </div>
+                        </form>
+                        <h5><a href="/account/forgotpassword" class="text-info">Forgot Password? Click Hear</a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
